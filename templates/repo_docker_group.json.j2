@@ -1,19 +1,17 @@
-{
-  "name": "{{ item.name }}",
-  "online": {{ item.online }},
+{% set payload = {
+  "name": item.name,
+  "online": item.online,
   "storage": {
-    "blobStoreName": "{{ item.blob_store }}",
-    "strictContentTypeValidation": {{ item.strict_content_type_validation }}
+    "blobStoreName": item.blob_store,
+    "strictContentTypeValidation": item.strict_content_type_validation
   },
   "group": {
-    "memberNames": [
-      {% for repo in item.group %}
-      "{{ repo }}"{% if not loop.last %},{% endif %}
-      {% endfor %}
-    ]
+    "memberNames": item.group
   },
   "docker": {
-    "v1Enabled": {{ item.v1_enabled }},
-    "forceBasicAuth": {{ item.force_basic_auth }},
-  },
-}
+    "v1Enabled": item.v1_enabled,
+    "forceBasicAuth": item.force_basic_auth
+  }
+} %}
+
+{{ payload | to_nice_json }}

@@ -1,22 +1,22 @@
-{
-  "name": "{{ item.name }}",
-  "online": {{ item.online }},
+{% set payload = {
+  "name": item.name,
+  "online": item.online,
   "storage": {
-    "blobStoreName": "{{ item.blob_store }}",
-    "strictContentTypeValidation": {{ item.strict_content_type_validation }},
-    "writePolicy": "{{ item.write_policy }}"
+    "blobStoreName": item.blob_store,
+    "strictContentTypeValidation": item.strict_content_type_validation,
+    "writePolicy": item.write_policy
   },
-  {% if item.cleanup_names is defined %}
-    "cleanup": {
-      "policyNames": [
-        {% for cleanup in item.cleanup_names %}
-        "{{ cleanup }}"{% if not loop.last %},{% endif %}
-        {% endfor %}
-      ]
-    },
-  {% endif %}
   "docker": {
-    "v1Enabled": {{ item.v1_enabled }},
-    "forceBasicAuth": {{ item.force_basic_auth }},
-  },
-}
+    "v1Enabled": item.v1_enabled,
+    "forceBasicAuth": item.force_basic_auth
+  }
+} %}
+{% if item.cleanup_names is defined %}
+{% set payload = payload | combine({
+  "cleanup": {
+    "policyNames": item.cleanup_names
+  }
+}) %}
+{% endif %}
+
+{{ payload | to_nice_json }}
