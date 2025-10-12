@@ -1,9 +1,9 @@
 {
   "name": "{{ item.name }}",
-  "online": {{ item.online }},
+  "online": {{ item.online | bool | lower}},
   "storage": {
     "blobStoreName": "{{ item.blob_store }}",
-    "strictContentTypeValidation": {{ item.strict_content_type_validation }}
+    "strictContentTypeValidation": {{ item.strict_content_type_validation | bool | lower }}
   },
   "group": {
     "memberNames": [
@@ -13,7 +13,7 @@
     ]
   },
   "docker": {
-    "v1Enabled": {{ item.v1_enabled }},
-    "forceBasicAuth": {{ item.force_basic_auth }},
-  },
+    "v1Enabled": {{ item.v1_enabled | bool | lower }},
+    "forceBasicAuth": {{ item.force_basic_auth | bool | lower }}
+  }
 }

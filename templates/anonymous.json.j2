@@ -1,5 +1,5 @@
 {
-  "enabled": {{ anonymous_access }},
+  "enabled": {{ anonymous_access | bool | lower }},
   "userId": "anonymous",
 
   "realmName": "NexusAuthorizingRealm"
