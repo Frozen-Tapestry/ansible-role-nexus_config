@@ -18,7 +18,7 @@
     url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/repositories/{{ item.type }}/{{ item.kind }}"
     user: "{{ admin_username }}"
     password: "{{ admin_password }}"
-    body: "{{ lookup('template','repo_{{ item.type }}_{{ item.kind }}.json.j2') }}"
+    body: "{{ lookup('template', 'repo_' ~ item.type ~ '_' ~ item.kind ~ '.json.j2') }}"
     method: POST
     status_code: [201, 204]
     force_basic_auth: true
@@ -28,7 +28,7 @@
     ca_path: "{{ root_ca }}"
   no_log: "{{ hide_sensitive_logs }}"
   register: changes
-  changed_when: changes.status == [201, 204]
+  changed_when: changes.status in [201, 204]
   delegate_to: localhost
   when:
     - item.online != "deleted"
@@ -39,7 +39,7 @@
     url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/repositories/{{ item.type }}/{{ item.kind }}/{{ item.name }}"
     user: "{{ admin_username }}"
     password: "{{ admin_password }}"
-    body: "{{ lookup('template','repo_{{ item.type }}_{{ item.kind }}.json.j2') }}"
+    body: "{{ lookup('template', 'repo_' ~ item.type ~ '_' ~ item.kind ~ '.json.j2') }}"
     method: PUT
     status_code: 204
     force_basic_auth: true

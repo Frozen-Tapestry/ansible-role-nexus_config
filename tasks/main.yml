@@ -34,7 +34,7 @@
       Content-Type: text/plain
     ca_path: "{{ root_ca }}"
   register: changes
-  changed_when: changes.status == [200, 204]
+  changed_when: changes.status in [200, 204]
   delegate_to: localhost
   run_once: true
   no_log: "{{ hide_sensitive_logs }}"
