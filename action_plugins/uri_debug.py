@@ -6,7 +6,7 @@ from ansible.plugins.action import ActionBase
 
 
 class ActionModule(ActionBase):
-    """Validate and (optionally) pretty-print request body before calling uri."""
+    """Validates and pretty-prints request body before calling uri if logging is enabled."""
 
     def run(self, tmp=None, task_vars=None):
         task_vars = task_vars or {}
