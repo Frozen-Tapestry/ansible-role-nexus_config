@@ -14,7 +14,7 @@
   register: existing_roles
 
 - name: Create role "{{ item.id }}"
-  uri:
+  uri_debug:
     url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/security/roles"
     user: "{{ admin_username }}"
     password: "{{ admin_password }}"
@@ -35,7 +35,7 @@
     - item.id not in ( existing_roles | community.general.json_query('json[*].id'))
 
 - name: Sync role "{{ item.id }}" setings
-  uri:
+  uri_debug:
     url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/security/roles/{{ item.id }}"
     user: "{{ admin_username }}"
     password: "{{ admin_password }}"

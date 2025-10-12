@@ -14,7 +14,7 @@
   register: existing_stores
 
 - name: Create Blob Store "{{ item.name }}"
-  uri:
+  uri_debug:
     url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/blobstores/{{ item.type }}"
     user: "{{ admin_username }}"
     password: "{{ admin_password }}"
@@ -35,7 +35,7 @@
     - item.name not in ( existing_stores | community.general.json_query('json[*].name'))
 
 - name: Sync Blob Store "{{ item.name }}" settings
-  uri:
+  uri_debug:
     url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/blobstores/{{ item.type }}/{{ item.name }}"
     user: "{{ admin_username }}"
     password: "{{ admin_password }}"

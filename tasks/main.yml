@@ -41,7 +41,7 @@
   when: initial_check.status == 200
 
 - name: Set Anonymous Access
-  uri:
+  uri_debug:
     url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/security/anonymous"
     user: "{{ admin_username }}"
     password: "{{ admin_password }}"
