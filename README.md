@@ -90,7 +90,7 @@ users: []
   #   roles:
   #     - nx-anonymous
 
-roles: []
+nx_roles: []
   #  - id: nx-role                         # Role ID
   #    name: nx-role                       # Role name
   #    description: Some new role          # Role description

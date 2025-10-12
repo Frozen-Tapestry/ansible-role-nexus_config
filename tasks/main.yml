@@ -62,7 +62,7 @@
 - name: Role management
   include_tasks: roles.yaml
   no_log: true
-  with_items: "{{ roles }}"
+  with_items: "{{ nx_roles }}"
 
 - name: User management
   include_tasks: users.yaml
