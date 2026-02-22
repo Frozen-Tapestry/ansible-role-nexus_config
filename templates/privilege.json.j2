@@ -1,0 +1,14 @@
+{
+  "name": "{{ item.name }}",
+  "description": "{{ item.description | default('') }}",
+  "actions": [
+    {% for action in item.actions %}
+    "{{ action }}"{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ],
+  {% if item.content_selector is defined %}
+  "contentSelector": "{{ item.content_selector }}",
+  {% endif %}
+  "format": "{{ item.format }}",
+  "repository": "{{ item.repository }}"
+}

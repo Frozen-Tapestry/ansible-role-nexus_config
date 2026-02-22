@@ -1,0 +1,7 @@
+{
+  {% if item.name not in (existing_content_selectors | json_query('json[*].name')) %}
+  "name": "{{ item.name }}",
+  {% endif %}
+  "description": "{{ item.description | default('') }}",
+  "expression": {{ item.expression | to_json }}
+}

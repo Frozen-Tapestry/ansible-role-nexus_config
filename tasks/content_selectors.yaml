@@ -1,0 +1,73 @@
+---
+
+- name: Check if Content Selector "{{ item.name }}" already exist
+  uri:
+    url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/security/content-selectors"
+    user: "{{ admin_username }}"
+    password: "{{ admin_password }}"
+    method: GET
+    status_code: 200
+    force_basic_auth: true
+    ca_path: "{{ root_ca }}"
+  no_log: "{{ hide_sensitive_logs }}"
+  delegate_to: localhost
+  register: existing_content_selectors
+
+- name: Create Content Selector "{{ item.name }}"
+  uri_debug:
+    url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/security/content-selectors"
+    user: "{{ admin_username }}"
+    password: "{{ admin_password }}"
+    body: "{{ lookup('template','content_selector.json.j2') }}"
+    method: POST
+    status_code: [200, 201, 204]
+    force_basic_auth: true
+    headers:
+      Content-Type: application/json
+    body_format: json
+    ca_path: "{{ root_ca }}"
+  no_log: "{{ hide_sensitive_logs }}"
+  register: changes
+  changed_when: changes.status in [200, 201, 204]
+  delegate_to: localhost
+  when:
+    - item.status != "deleted"
+    - item.name not in ( existing_content_selectors | community.general.json_query('json[*].name'))
+
+- name: Sync Content Selector "{{ item.name }}" settings
+  uri_debug:
+    url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/security/content-selectors/{{ item.name }}"
+    user: "{{ admin_username }}"
+    password: "{{ admin_password }}"
+    body: "{{ lookup('template','content_selector.json.j2') }}"
+    method: PUT
+    status_code: [200, 204]
+    force_basic_auth: true
+    headers:
+      Content-Type: application/json
+    body_format: json
+    ca_path: "{{ root_ca }}"
+  no_log: "{{ hide_sensitive_logs }}"
+  register: changes
+  changed_when: changes.status in [200, 204]
+  delegate_to: localhost
+  when:
+    - item.status != "deleted"
+    - item.name in ( existing_content_selectors | community.general.json_query('json[*].name'))
+
+- name: Delete Content Selector "{{ item.name }}"
+  uri:
+    url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/security/content-selectors/{{ item.name }}"
+    user: "{{ admin_username }}"
+    password: "{{ admin_password }}"
+    method: DELETE
+    status_code: 204
+    force_basic_auth: true
+    ca_path: "{{ root_ca }}"
+  no_log: "{{ hide_sensitive_logs }}"
+  register: changes
+  changed_when: changes.status == 204
+  delegate_to: localhost
+  when:
+    - item.status == "deleted"
+    - item.name in ( existing_content_selectors | community.general.json_query('json[*].name'))

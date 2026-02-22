@@ -27,6 +27,12 @@ Currently, this role is covers:
 - [x] Repositories (Maven, Docker, PyPi, Conda, R, npm) creation
 - [x] Repositories (Maven, Docker, PyPi, Conda, R, npm) update
 - [x] Repositories (Maven, Docker, PyPi, Conda, R, npm) deletion
+- [x] Content selectors creation
+- [x] Content selectors update
+- [x] Content selectors deletion
+- [x] Privileges creation
+- [x] Privileges update
+- [x] Privileges deletion
 - [x] Roles creation
 - [x] Roles update
 - [x] Roles detetion
@@ -89,6 +95,24 @@ users: []
   #   source: default
   #   roles:
   #     - nx-anonymous
+
+content_selectors: []
+  # - name: maven2-releases                  # Content selector name
+  #   description: Select Maven releases     # Content selector description
+  #   expression: format == "maven2"         # Selector expression
+  #   status: created                        # Status of the content selector. You can set created or deleted to delete the content selector.
+
+privileges: []
+  # - name: nx-repository-content-selector-maven2-releases  # Privilege name
+  #   description: Read and browse Maven releases            # Privilege description
+  #   type: repository-content-selector                      # Privilege type
+  #   format: maven2                                         # Repository format
+  #   repository: "*"                                        # Repository name or * for all repositories
+  #   content_selector: maven2-releases                      # Linked content selector
+  #   actions:                                               # Allowed actions
+  #     - browse
+  #     - read
+  #   status: created                                        # Status of the privilege. You can set created or deleted to delete the privilege.
 
 nx_roles: []
   #  - id: nx-role                         # Role ID

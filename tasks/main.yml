@@ -59,6 +59,16 @@
   run_once: true
   no_log: "{{ hide_sensitive_logs }}"
 
+- name: Content Selectors management
+  include_tasks: content_selectors.yaml
+  no_log: true
+  with_items: "{{ content_selectors }}"
+
+- name: Privileges management
+  include_tasks: privileges.yaml
+  no_log: true
+  with_items: "{{ privileges }}"
+
 - name: Role management
   include_tasks: roles.yaml
   no_log: true
