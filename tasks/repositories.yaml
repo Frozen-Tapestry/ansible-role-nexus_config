@@ -13,7 +13,7 @@
   delegate_to: localhost
   register: existing_repos
 
-- name: Create if Repository "{{ item.name }}"
+- name: Create Repository "{{ item.name }}"
   uri_debug:
     url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/repositories/{{ item.type }}/{{ item.kind }}"
     user: "{{ admin_username }}"
@@ -34,7 +34,7 @@
     - item.online != "deleted"
     - item.name not in ( existing_repos | community.general.json_query('json[*].name'))
 
-- name: Sync if Repository "{{ item.name }}" settings
+- name: Sync Repository "{{ item.name }}" settings
   uri_debug:
     url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/repositories/{{ item.type }}/{{ item.kind }}/{{ item.name }}"
     user: "{{ admin_username }}"
@@ -55,7 +55,7 @@
     - item.online != "deleted"
     - item.name in ( existing_repos | community.general.json_query('json[*].name'))
 
-- name: Delete if Repository "{{ item.name }}"
+- name: Delete Repository "{{ item.name }}"
   uri:
     url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/repositories/{{ item.name }}"
     user: "{{ admin_username }}"

@@ -34,7 +34,7 @@
     - item.status != "deleted"
     - item.id not in ( existing_users | community.general.json_query('json[*].userId'))
 
-- name: Sync user "{{ item.id }}" setings
+- name: Sync user "{{ item.id }}" settings
   uri_debug:
     url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/security/users/{{ item.id }}"
     user: "{{ admin_username }}"

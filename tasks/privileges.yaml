@@ -35,7 +35,7 @@
     - item.type is defined
     - item.name not in ( existing_privileges | community.general.json_query('json[*].name'))
 
-- name: Sync privilege "{{ item.name }}" setings
+- name: Sync privilege "{{ item.name }}" settings
   uri_debug:
     url: "{{ api_protocol }}://{{ api_host }}:{{ api_port }}/service/rest/v1/security/privileges/{{ item.type }}/{{ item.name }}"
     user: "{{ admin_username }}"

@@ -12,6 +12,7 @@ This Ansible role will configure [Sonatype Nexus Repository Manager](https://www
 Currently, this role is covers:
 
 - [x] Initial admin password setup
+- [x] Anonymous access configuration
 - [x] Users creation
 - [x] Users update
 - [x] Users deletion
@@ -35,7 +36,7 @@ Currently, this role is covers:
 - [x] Privileges deletion
 - [x] Roles creation
 - [x] Roles update
-- [x] Roles detetion
+- [x] Roles deletion
 - TBD ...
 
 ## Requirements
@@ -56,6 +57,7 @@ admin_username: admin
 initial_admin_password: admin123
 
 # Admin password which will be set during the initial setup.
+# Must be non-empty (for example provided via ADMIN_PASSWORD environment variable).
 admin_password: "{{ lookup('env', 'ADMIN_PASSWORD') }}"
 
 # Nexus API host
@@ -253,6 +255,9 @@ repositories: []
 
 ```
 
+`anonymous_access` controls the payload sent to `/service/rest/v1/security/anonymous` and toggles anonymous access (`true` enables it, `false` disables it).  
+`admin_password` must be set to a non-empty value because it is used for authenticated API calls after the initial connection check.
+
 ## Example Playbook
 
 In this example the playbook will create two additional Nexus users and one additional Blob Storage.
@@ -264,32 +269,31 @@ In this example the playbook will create two additional Nexus users and one addi
   user: ansible
   become: yes
   vars:
-    config:
-      users:
-        - id: joan
-          first_name: Joan
-          last_name: Doe
-          email: joan@example.org
-          password: "{{ lookup('env', 'JOAN_PASSWORD') }}"
-          status: active
-          source: default
-          roles:
-            - nx-admin
-        - id: joe
-          first_name: Joe
-          last_name: Doe
-          email: joe@example.org
-          password: nbusr123
-          status: disabled
-          source: default
-          roles:
-            - nx-anonymous
-      stores:
-        - name: file_blob
-          type: file
-          soft_quota: 0
-          path: /mydata/blobs
-          status: active
+    users:
+      - id: joan
+        first_name: Joan
+        last_name: Doe
+        email: joan@example.org
+        password: "{{ lookup('env', 'JOAN_PASSWORD') }}"
+        status: active
+        source: default
+        roles:
+          - nx-admin
+      - id: joe
+        first_name: Joe
+        last_name: Doe
+        email: joe@example.org
+        password: nbusr123
+        status: disabled
+        source: default
+        roles:
+          - nx-anonymous
+    stores:
+      - name: file_blob
+        type: file
+        soft_quota: 0
+        path: /mydata/blobs
+        status: active
   roles:
     - role: lablabs.nexus_config
 ```
